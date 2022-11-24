@@ -19,7 +19,7 @@ model:
     use_ema: False
     embedding_reg_weight: 0.0
     unfreeze_model: True
-    model_lr: 1.0e-6
+    model_lr: 2.0e-6
 
     personalization_config:
       target: ldm.modules.embedding_manager.EmbeddingManager
