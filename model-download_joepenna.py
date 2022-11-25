@@ -39,18 +39,17 @@ from IPython.display import clear_output
 
 from huggingface_hub import hf_hub_download
 
-if False:
-  downloaded_model_path = hf_hub_download(
-     repo_id="runwayml/stable-diffusion-v1-5",
-     filename="v1-5-pruned.ckpt",
-     token=hf_token
-  )
+downloaded_model_path = hf_hub_download(
+   repo_id="runwayml/stable-diffusion-v1-5",
+   filename="v1-5-pruned.ckpt",
+   token=hf_token
+)
 
-  # Move the sd-v1-5.ckpt to the root of this directory as "model.ckpt"
-  actual_locations_of_model_blob = get_ipython().getoutput('readlink -f {downloaded_model_path}')
-  get_ipython().system('mv {actual_locations_of_model_blob[-1]} model.ckpt')
-  clear_output()
-  print("✅ model.ckpt successfully downloaded")
+# Move the sd-v1-5.ckpt to the root of this directory as "model.ckpt"
+actual_locations_of_model_blob = get_ipython().getoutput('readlink -f {downloaded_model_path}')
+get_ipython().system('mv {actual_locations_of_model_blob[-1]} model.ckpt')
+clear_output()
+print("✅ model.ckpt successfully downloaded")
 
 
 

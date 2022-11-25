@@ -59,7 +59,8 @@ get_ipython().system('rm -rf $INF_OUTPUT_DIR')
 
 def run_inference(prompt, negative_prompt,  output_dir, path_to_trained_model, ddim_steps, cfg_scale):
   with capture.capture_output() as cap: 
-    get_ipython().system('python /content/Dreambooth-Stable-Diffusion/scripts/stable_txt2img.py  --seed 332  --prompt "$prompt" --negative_prompt "$negative_prompt"  --outdir "$output_dir" --ddim_eta 0.0  --H 512 --W 512 --n_samples 1  --n_iter 3  --scale "$cfg_scale"  --ddim_steps "$ddim_steps"  --ckpt "$path_to_trained_model"')
+    #get_ipython().system('python /content/Dreambooth-Stable-Diffusion/scripts/stable_txt2img.py  --seed 332  --prompt "$prompt" --negative_prompt "$negative_prompt"  --outdir "$output_dir" --ddim_eta 0.0  --H 512 --W 512 --n_samples 1  --n_iter 3  --scale "$cfg_scale"  --ddim_steps "$ddim_steps"  --ckpt "$path_to_trained_model"')
+    get_ipython().system('python /content/Dreambooth-Stable-Diffusion/scripts/stable_txt2img.py  --seed 332  --prompt "$prompt" --outdir "$output_dir" --ddim_eta 0.0  --H 512 --W 512 --n_samples 1  --n_iter 3  --scale "$cfg_scale"  --ddim_steps "$ddim_steps"  --ckpt "$path_to_trained_model"')
 
 
 

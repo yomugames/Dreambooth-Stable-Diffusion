@@ -93,6 +93,8 @@ def download_image(url):
   return None
  return Image.open(BytesIO(response.content)).convert("RGB")
 
+get_ipython().system('rm -r {InstanceImagesFolder}/')
+
 images = list(filter(None,[download_image(url) for url in urls]))
 save_path = InstanceImagesFolder
 if not os.path.exists(save_path):
@@ -117,7 +119,8 @@ project_name = "project_name"
 
 # MAX STEPS
 # How many steps do you want to train for?
-max_training_steps = len(images) * 100   #2700 #@param{type: 'number'}
+max_training_steps = 2000 #len(images) * 100   #2700 #@param{type: 'number'}
+print ("training for " + str(max_training_steps))
 
 # Match class_word to the category of the regularization images you chose above.
 class_word = "person" # typical uses are "man", "person", "woman"
@@ -125,12 +128,15 @@ class_word = "person" # typical uses are "man", "person", "woman"
 # This is the unique token you are incorporating into the stable diffusion model.
 token = "userxyz"
 
-
+dataset = "person_ddim"
 reg_data_root = "/content/Dreambooth-Stable-Diffusion/regularization_images/" + dataset
 
-get_ipython().system('rm -rf {InstanceImagesFolder}/.ipynb_checkpoints')
-get_ipython().system('python "/content/Dreambooth-Stable-Diffusion/main.py"  --base configs/stable-diffusion/v1-finetune_unfrozen.yaml --seed {seed} -t  --actual_resume "model.ckpt"  --reg_data_root "{reg_data_root}"  -n "{project_name}"  --gpus 0,  --data_root "{InstanceImagesFolder}"  --max_training_steps {max_training_steps}  --class_word "{class_word}"  --token "{token}"  --no-test')
 
+train_cmd = f"python \"/content/Dreambooth-Stable-Diffusion/main.py\"  --base configs/stable-diffusion/v1-finetune_unfrozen.yaml --seed {seed} -t  --actual_resume \"model.ckpt\"  --reg_data_root \"{reg_data_root}\"  -n \"{project_name}\"  --gpus 0  --data_root \"{InstanceImagesFolder}\"  --max_training_steps {max_training_steps}  --class_word \"{class_word}\"  --token \"{token}\"  --no-test"
+
+print("train cmd: " + train_cmd)
+
+get_ipython().system(train_cmd)
 
 # ## Copy and name the checkpoint file
 
@@ -141,7 +147,6 @@ get_ipython().system('python "/content/Dreambooth-Stable-Diffusion/main.py"  --b
 
 directory_paths = get_ipython().getoutput('ls -d logs/*')
 last_checkpoint_file = directory_paths[-1] + "/checkpoints/last.ckpt"
-training_images = get_ipython().getoutput('find training_images/*')
 date_string = get_ipython().getoutput('date +"%Y-%m-%dT%H-%M-%S"')
 #file_name = date_string[-1] + "_" + project_name + "_" + str(len(training_images)) + "_training_images_" +  str(max_training_steps) + "_max_training_steps_" + token + "_token_" + class_word + "_class_word.ckpt"
 
